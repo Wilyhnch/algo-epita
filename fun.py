@@ -66,3 +66,17 @@ def opeval(op1,op2):
     op_1 = opeval_at(op1)
     op_2 = opeval_at(op2)
     return op_1 < op_2
+
+def printStack(S):
+    T = stack.Stack()
+    T = S
+    print("[TOP]")
+    while not(T.isempty()):
+        print (T.pop(), " ")
+    print ("[BOTTOM]")
+
+#S = stack.Stack()
+#S.push(1)
+#S.push(2)
+#S.push(3)
+#printStack(S)

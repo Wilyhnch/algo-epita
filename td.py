@@ -33,20 +33,8 @@ def expfullpar (exp):
 
 #Normal expression evaluation
 def expwipar (exp):
-    opstack = stack.Stack()
-    valstack = stack.Stack()
-    for c in exp:
-        if fun.isop(c):
-            if not(opstack.isempty):
-                top = opstack.top()
-                if fun.opeval(c,top):
-                    b = valstack.pop()
-                    valstack.push(fun.eval(opstack.pop(),valstack.pop(),b))
-                else:
-                    opstack.push(c)
-            opstack.push(c)
-        elif fun.isop(c) == False:
-            valstack.push(int(c))
-    return valstack.pop()
+
+
+
 
 print(expwipar(expnrl))
