@@ -80,3 +80,36 @@ def printStack(S):
 #S.push(2)
 #S.push(3)
 #printStack(S)
+
+def evalsquare (M):
+    ligne = len(M)
+    column = len(M[0])
+    length = 0
+    for i in range (ligne):
+        for j in range (column):
+            res = str(M[i][j])
+            if len(res) > length:
+                length = len(res)
+    return length
+
+def center (s,l):
+    switch = True
+    while(len(s)<l):
+        if switch:
+            s = " " + s
+            switch = False
+        else:
+            s += " "
+            switch = True
+    return s
+
+def ligne_maker (filler, sep, length, column):
+    res = sep
+    for i in range (column):
+        for j in range (length):
+            res += filler
+        res += sep
+    return res
+
+#print (ligne_maker(" ","|",6,8))
+#print (ligne_maker("-","-",6,8))
