@@ -113,3 +113,23 @@ def ligne_maker (filler, sep, length, column):
 
 #print (ligne_maker(" ","|",6,8))
 #print (ligne_maker("-","-",6,8))
+
+
+def trim_str (string,side,nbr):
+    res = ""
+    length = len(string)
+    if (side == "front"):
+        for i in range (nbr,length):
+            res += string[i]
+    elif (side == "back"):
+        for i in range (0,length - nbr):
+            res += string[i]
+    else:
+        raise ValueError ("front or back")
+    return res
+
+
+
+s = "bijour salope"
+print(trim_str(s,"front",3))
+print(trim_str(s,"back",4))

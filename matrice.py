@@ -54,6 +54,17 @@ def prettymatrix (M):
         print(blanklign)
         print(interligne)
 
+def load_matrix(f_name):
+    M = []
+    f = open(f_name,"r")
+    M_f = f.readlines()
+    length = len(M_f)
+    for i in range (length):
+        tst = fun.trim_str(M_f[i],"back",1)
+        res = fun.split(tst)
+        M.append(res)
+    return M
+
 
 
 
@@ -61,12 +72,12 @@ def prettymatrix (M):
 #print("B")
 #printmatrix(B)
 #print("A")
-A = buildmatrix(100,30,10000)
+#A = buildmatrix(100,30,10000)
 #printmatrix(A)
 #print (fun.evalsquare(A))
-
-prettymatrix(A)
-
+#prettymatrix(A)
 #f = load(filename)
 #f.close()
 #f.readlines ...
+C = load_matrix("mat_text")
+prettymatrix(C)
