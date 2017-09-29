@@ -129,5 +129,5 @@ def trim_str (string,front,nbr):
 
 
 s = "this is a test"
-print(trim_str(s,"front",3))
-print(trim_str(s,"back",4))
+print(trim_str(s,True,3))
+print(trim_str(s,False,4))
