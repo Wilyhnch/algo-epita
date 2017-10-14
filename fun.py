@@ -5,17 +5,34 @@ import queue
 import stack
 
 #split function
-def split (str,split = ' '):
+def split (string,split = ' ',list_type = True):
+    '''
+    Function split (string, split, list_type)
+    creates a list of sting or int by cutting the string at the split char
+    string = intput string
+    split = char (' ' by default)
+    list_type = bool (output = list_str if True and list_int if False)(True by default)
+    '''
     l = []
     res = ""
-    for c in str:
-         if(c == split and res != ""):
-             l.append(res)
-             res = ""
-         elif c != split:
-             res += c
-    if res != "":
-        l.append(res)
+    if list_type:
+        for c in string:
+            if(c == split and res != ""):
+                l.append(res)
+                res = ""
+            elif c != split:
+                res += c
+        if res != "":
+            l.append(res)
+    else:
+        for c in string:
+             if(c == split and res != ""):
+                 l.append(int(res))
+                 res = ""
+             elif c != split:
+                 res += c
+        if res != "":
+            l.append(int(res))
     return l
 #print(split(testspace2,"w"))
 #print(split(testspace,"w"))
@@ -128,6 +145,17 @@ def trim_str (string,front,nbr):
 
 
 
-s = "this is a test"
-print(trim_str(s,True,3))
-print(trim_str(s,False,4))
+#s = "this is a test"
+#print(trim_str(s,True,3))
+#print(trim_str(s,False,4))
+
+def maxlist (l,rankfirst = 0):
+    maxi = l[0]
+    rankmax = rankfirst
+    rank = rankfirst - 1
+    for c in l:
+        rank += 1
+        if c > maxi :
+            maxi = c
+            rankmax = rank
+    return (maxi , rankmax)
