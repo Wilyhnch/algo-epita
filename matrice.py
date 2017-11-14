@@ -12,6 +12,12 @@ M1 = [[17,24,1,8,15],
       [10,12,19,21,3],
       [11,18,25,2,9]]
 
+M2 = [[1,10,3,0,-3,2,8,],
+      [-1,0,1,8,5,0,-4],
+      [10,9,14,1,4,-5,1],
+      [10,-3,7,11,6,3,0],
+      [7,8,-5,1,5,4,10]]
+
 def printmatrix(M):
     lignenbr = len(M)
     columnbr = len(M[0])
@@ -90,9 +96,9 @@ def add(A,B):
 #f = load(filename)
 #f.close()
 #f.readlines ...
-C = load_matrix("mat_text")
+#C = load_matrix("mat_text")
 #print("C")
-prettymatrix(C)
+#prettymatrix(C)
 #print("M1")
 #prettymatrix(M1)
 #D = add(M1,C)
@@ -133,7 +139,24 @@ def mathpath (M):
         s.push(rank)
     return s
 
-res , M2 = dynamatrix(C)
+#res , M2 = dynamatrix(C)
+#prettymatrix(M2)
+#path = mathpath(M2)
+#fun.printStack(path)
+
+def maxGapMatrix (M):
+    lines = len (M)
+    column = len(M[0])
+    max_Gap = 0
+    for i in range (lines) :
+        min_line = M[i][0]
+        max_line = M[i][0]
+        for j in range (1,column):
+            min_line = min(min_line, M[i][j])
+            max_line = max(max_line, M[i][j])
+        max_Gap = max(max_Gap,(max_line - min_line))
+    return (max_Gap)
+
+
 prettymatrix(M2)
-path = mathpath(M2)
-fun.printStack(path)
+print(maxGapMatrix(M2))

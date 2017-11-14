@@ -18,7 +18,7 @@ def split (string,split = ' ',list_type = True):
     if list_type:
         for c in string:
             if(c == split and res != ""):
-                l.append(res)
+                l.a.ppend(res)
                 res = ""
             elif c != split:
                 res += c
@@ -159,3 +159,25 @@ def maxlist (l,rankfirst = 0):
             maxi = c
             rankmax = rank
     return (maxi , rankmax)
+
+def len_queue (q):
+    g = queue.Queue()
+    g = q
+    length = 0
+    while not g.isempty():
+        g.dequeue()
+        length += 1;
+    return length
+
+def print_queue (b):
+    q = queue.Queue()
+    q = b
+    res = "{"
+    while not q.isempty():
+        c = q.dequeue()
+        if c ==None:
+            print ("None}{")
+        else:
+            res += c.key + "}{"
+
+    print (res)
