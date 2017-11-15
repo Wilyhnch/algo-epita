@@ -181,3 +181,10 @@ def print_queue (b):
             res += c.key + "}{"
 
     print (res)
+
+def sort_bubble(L):
+    n = len(L)
+    for i in range(n):
+        for j in range(n-1-i):
+            if L[j] > L[j+1]:
+                L[j], L[j+1] = L[j+1], L[j]

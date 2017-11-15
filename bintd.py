@@ -163,6 +163,22 @@ def serializeTree(T):
 ################HOW TO PRINT TREES#####################
 #######################################################
 
+def __print_tree_int (B,string):
+    if B == None:
+        print (string + "#")
+    else:
+        res = string + str(B.key)
+        print (res)
+        string += "   | "
+        __print_tree_int(B.right, string)
+        __print_tree_int(B.left, string)
+
+def print_tree_int (B):
+    if B == None:
+        return None
+    else:
+        res = "| "
+        __print_tree_int(B,res)
 
 def __print_tree (B,string):
     if B == None:
@@ -364,26 +380,73 @@ def affichemoi (B):
         return __affichemoi(B,"")
 
 
+def occ_list (B):
+    '''
+    Not Working Yet
+    '''
+    if B == None:
+        return None
+    else:
+        l = [chr(949)]
+        q = queue.Queue()
+        oc = ""
+        q.enqueue((B,oc))
+        while not q.isempty():
+            c,oc = q.dequeue()
+            if oc != "":
+                l.append(oc)
+            if B.left != None:
+                q.enqueue((B.left,"0" + oc))
+            if B.right != None:
+                q.enqueue((B.right,"1" + oc))
+    return l
+
+def create_list(h):
+    l = []
+    for i in range (h):
+        l.append(None)
+    return l
+
+def __hier_list (B,l,n = 1):
+    l[n] = B.key
+    l = __hier_list(B.left,l,n*2)
+    l = __hier_list(B.right,l,(n*2)+1)
+    return n
+
+def hier_list (B):
+    h = depth(B)
+    l = create_list(h)
+    if B == None:
+        return None
+    else:
+        return __hier_list (B,l,1)
 
 
 
 
-tree_test_string = "Q#B#C#T#BN##E##"
-T = deSerializeTree(tree_test_string)
-print (serializeTree(T))
-print_tree(T)
-print(" ")
-DfsPrint(T)
+
+
+
+
+
+
+
+#tree_test_string = "Q#B#C#T#BN##E##"
+#T = deSerializeTree(tree_test_string)
+#print (serializeTree(T))
+#print_tree(T)
+#print(" ")
+#DfsPrint(T)
 #print(IsDegenerate(T))
 #print(IsPerfect(T))
 #print(IsPerfect_upward(T))
 
-tree_test_string = "VDI##G##SE##F##"
-C = deSerializeTree(tree_test_string)
-print (serializeTree(C))
-print_tree(C)
-print(" ")
-DfsPrint(C)
+#tree_test_string = "VDI##G##SE##F##"
+#C = deSerializeTree(tree_test_string)
+#print (serializeTree(C))
+#print_tree(C)
+#print(" ")
+#DfsPrint(C)
 #print("Dege")
 #print(IsDegenerate(C))
 #print("Comp")
@@ -392,12 +455,14 @@ DfsPrint(C)
 #print (width(C))
 
 
-tree_test_string = "GFK#FD##R#FD##DG###VVS##DGGH########"
-N = deSerializeTree(tree_test_string)
-print (serializeTree(N))
-print_tree(N)
-print(" ")
-DfsPrint(N)
+#tree_test_string = "GFK#FD##R##FD##DG###VVS##DGGH######"
+#N = deSerializeTree(tree_test_string)
+#print (serializeTree(N))
+#print_tree(N)
+#print(" ")
+#DfsPrint(N)
+
+#print(hier_list(N))
 
 #print(width(T))
 #print(" ")
@@ -425,10 +490,10 @@ DfsPrint(N)
 
 
 
-tree_test_string = "+*-A##B##C##/*D##E##+F##G##"
-H = deSerializeTree(tree_test_string)
-print (serializeTree(H))
-print_tree(H)
-print(" ")
-DfsPrint(H)
-print(affichemoi(H))
+#tree_test_string = "+*-A##B##C##/*D##E##+F##G##"
+#H = deSerializeTree(tree_test_string)
+#print (serializeTree(H))
+#print_tree(H)
+#print(" ")
+#DfsPrint(H)
+#print(affichemoi(H))
