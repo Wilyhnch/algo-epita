@@ -3,8 +3,6 @@ import queue
 import stack
 import fun
 
-
-
 def size(T):
     """Compute size of binary tree"""
     if T == None:
@@ -401,59 +399,148 @@ def occ_list (B):
                 q.enqueue((B.right,"1" + oc))
     return l
 
-def create_list(h):
-    l = []
-    for i in range (h):
+def extend_list (l,n):
+    for i in range (n):
         l.append(None)
-    return l
 
 def __hier_list (B,l,n = 1):
-    l[n] = B.key
-    l = __hier_list(B.left,l,n*2)
-    l = __hier_list(B.right,l,(n*2)+1)
-    return n
+    if B != None:
+        l[n] = B.key
+        __hier_list(B.left,l,2*n)
+        __hier_list(B.right,l,(2*n)+1)
+    pass
 
 def hier_list (B):
     h = depth(B)
-    l = create_list(h)
+    l = [None] * (2**(h+1))
     if B == None:
         return None
     else:
-        return __hier_list (B,l,1)
+        __hier_list (B,l,1)
+        return l
+
+#def __hier2bintree (l,n):
+
+
+
+def hier2bintree (l, n =1):
+    if n >= len(l) or l[n] == None:
+        return None
+    else:
+        B = bintree.BinTree(l[n],None,None)
+        B.left = hier2bintree(l,n*2)
+        B.right = hier2bintree(l,n*2+1)
+    return B
+###############################################
+###############################################
+
+def __print_keylevel(keys,level,height):
+    num_key = len(keys)
+    space_front = 0
+    for i in range (height + 1 - level):
+        space_front += 2 ** i
+    for i in range (space_front):
+        print(" ",end = '')
+    between_tree = False
+    for i in range (num_key):
+        if keys[i] != '#':
+            print(keys[i],end = '')
+        else:
+            print(" ",end = '')
+        if not between_tree :
+            for j in range ((2 ** (height + 1 - level))*2 ):
+                print (" ",end = '')
+        else:
+            for j in range (((2 **(height + 1 - level))*2) - 2):
+                print(" ", end = '')
+        between_tree = not between_tree
+    print()
+
+def __print_branches (l,level,height):
+    length = len(l)
+    space_front = 0
+    for i in range (height + 1 - level):
+        space_front += 2 ** i
+    space_front -= 1
+    space_middle_bar = 1
+    space_middle_rep = ((2 **(height + 1 - level))*2) - 2
+    i,j = -1,0
+    while j < 2**(height - level):
+        for k in range (space_front):
+            print(" ",end = '')
+        for k in range (2**level):
+            i += 1
+            if l[i] != '#':
+                print("/",end = '')
+            else:
+                print(" ",end = '')
+            i += 1
+            for g in range (space_middle_bar):
+                print(" ",end = '')
+            if l[i] != '#':
+                print("\\", end = '')
+            else:
+                print(" ",end = '')
+            if (i % 4) != 3 :
+                for w in range (space_middle_rep):
+                    print (" ",end = '')
+            else:
+                for w in range (space_middle_rep - 2):
+                    print(" ",end = '')
+
+        i = -1
+        j += 1
+        space_front -= 1
+        space_middle_bar += 2
+        space_middle_rep -= 2
+        print()
+
+def pretty_print_tree (B):
+    height = depth(B)
+    level = 0
+    q = queue.Queue()
+    q.enqueue(B)
+    q.enqueue(None)
+    l_key = []
+    l_child = []
+    while level <= height:
+        c = q.dequeue()
+        if c == None:
+            __print_keylevel(l_key,level,height)
+            __print_branches(l_child,level,height)
+            l_child = []
+            l_key = []
+            level += 1
+            if not q.isempty():
+                q.enqueue(None)
+        else:
+            if c == '#':
+                l_key.append('#')
+                l_child.append('#')
+                l_child.append('#')
+                q.enqueue('#')
+                q.enqueue('#')
+            else:
+                l_key.append(c.key)
+                if c.left == None:
+                    l_child.append('#')
+                    q.enqueue('#')
+                else:
+                    l_child.append(c.left.key)
+                    q.enqueue(c.left)
+                if c.right == None:
+                    l_child.append('#')
+                    q.enqueue('#')
+                else:
+                    l_child.append(c.right.key)
+                    q.enqueue(c.right)
 
 
 
 
 
-
-
-
-
-
-
-#tree_test_string = "Q#B#C#T#BN##E##"
-#T = deSerializeTree(tree_test_string)
-#print (serializeTree(T))
-#print_tree(T)
-#print(" ")
-#DfsPrint(T)
-#print(IsDegenerate(T))
-#print(IsPerfect(T))
-#print(IsPerfect_upward(T))
-
-#tree_test_string = "VDI##G##SE##F##"
-#C = deSerializeTree(tree_test_string)
-#print (serializeTree(C))
-#print_tree(C)
-#print(" ")
-#DfsPrint(C)
-#print("Dege")
-#print(IsDegenerate(C))
-#print("Comp")
-#print(IsPerfect(C))
-#print(IsPerfect_upward(C))
-#print (width(C))
-
+###############################################
+###############################################
 
 #tree_test_string = "GFK#FD##R##FD##DG###VVS##DGGH######"
 #N = deSerializeTree(tree_test_string)
@@ -461,39 +548,27 @@ def hier_list (B):
 #print_tree(N)
 #print(" ")
 #DfsPrint(N)
+#hier = hier_list(N)
+#print(hier)
+#G = hier2bintree(hier)
+#print_tree(G)
 
-#print(hier_list(N))
-
-#print(width(T))
-#print(" ")
-#B = deSerializeTree(strB)
-#print (serializeTree(B))
-#print_tree(B)
-#DfsPrint(B)
-#print(width(B))
-#F = occurence(T,'E')
-#print(F)
-#G = occurence(T,'U')
-#print (G)
-
-#print ("T / C")
-#print (equal(T,C))
-#print ("C / B")
-#print (equal(C,C))
-#print ("T / N")
-#print (equal(T,N))
-#print ("N / C")
-#print (equal(N,C))
-#print ("N / N")
-#print (equal(N,N))
-#print (node(C))
+t = "ABD##E##CF##G##"
+T = deSerializeTree(t)
+print("arbre T")
+print("")
+pretty_print_tree(T)
 
 
+b = "AB#CEF###D##G#H#IJ###"
+B = deSerializeTree(b)
+print("arbre B")
+print("")
+pretty_print_tree(B)
 
-#tree_test_string = "+*-A##B##C##/*D##E##+F##G##"
-#H = deSerializeTree(tree_test_string)
-#print (serializeTree(H))
-#print_tree(H)
-#print(" ")
-#DfsPrint(H)
-#print(affichemoi(H))
+
+i = "ABDHW##Q##IO##V##EJC##L##KG##S##CFLM##R##MZ##F##GNT##V##OY##P##"
+I = deSerializeTree(i)
+print("arbre I ")
+print("")
+pretty_print_tree(I)

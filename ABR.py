@@ -4,6 +4,7 @@ import stack
 import fun
 import bintd
 
+
 def add_leaf(B,x):
     if B == None:
         B = bintree.BinTree(x,None,None)
@@ -53,14 +54,13 @@ def Build_abr (l):
     return B
 
 
+
 L = [12,3,4,5,72,6,8,54,34,51,64,43,2,23,32,78,47,21,22,37,9,90]
-print("list before ",L)
+print("L ", L)
 C = Build_abr(L)
+print("tree C")
 bintd.print_tree_int(C)
 B = Build_balanced_abr(L)
-print("list after ",L)
-print("tree ")
-bintd.print_tree_int(B)
-B = add_leaf(B,79)
-print("tree 2 ")
+print("list tree ",L)
+print("tree B")
 bintd.print_tree_int(B)
