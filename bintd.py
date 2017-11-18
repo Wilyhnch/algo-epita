@@ -433,6 +433,18 @@ def hier2bintree (l, n =1):
     return B
 ###############################################
 ###############################################
+def chr_length (c):
+    res = 0
+    if isinstance(c,int):
+        while c != 0 :
+            res += 1
+            c = c // 10
+    else:
+        for i in c:
+            res += 1
+    return res
+
+
 
 def __print_keylevel(keys,level,height):
     num_key = len(keys)
@@ -447,12 +459,14 @@ def __print_keylevel(keys,level,height):
             print(keys[i],end = '')
         else:
             print(" ",end = '')
-        if not between_tree :
-            for j in range ((2 ** (height + 1 - level))*2 ):
-                print (" ",end = '')
-        else:
-            for j in range (((2 **(height + 1 - level))*2) - 2):
-                print(" ", end = '')
+        chr_len = chr_length(keys[i])
+        if i < num_key - 1:
+            if not between_tree :
+                for j in range ((2 ** (height + 1 - level))*2 + 1 - chr_len):
+                    print (" ",end = '')
+            else:
+                for j in range (((2 **(height + 1 - level))*2) - 2 + 1 - chr_len):
+                    print(" ", end = '')
         between_tree = not between_tree
     print()
 
@@ -481,13 +495,13 @@ def __print_branches (l,level,height):
                 print("\\", end = '')
             else:
                 print(" ",end = '')
-            if (i % 4) != 3 :
-                for w in range (space_middle_rep):
-                    print (" ",end = '')
-            else:
-                for w in range (space_middle_rep - 2):
-                    print(" ",end = '')
-
+            if i < length - 1:
+                if (i % 4) != 3 :
+                    for w in range (space_middle_rep):
+                        print (" ",end = '')
+                else:
+                    for w in range (space_middle_rep - 2):
+                        print(" ",end = '')
         i = -1
         j += 1
         space_front -= 1
@@ -536,39 +550,5 @@ def pretty_print_tree (B):
                     q.enqueue(c.right)
 
 
-
-
-
 ###############################################
 ###############################################
-
-#tree_test_string = "GFK#FD##R##FD##DG###VVS##DGGH######"
-#N = deSerializeTree(tree_test_string)
-#print (serializeTree(N))
-#print_tree(N)
-#print(" ")
-#DfsPrint(N)
-#hier = hier_list(N)
-#print(hier)
-#G = hier2bintree(hier)
-#print_tree(G)
-
-t = "ABD##E##CF##G##"
-T = deSerializeTree(t)
-print("arbre T")
-print("")
-pretty_print_tree(T)
-
-
-b = "AB#CEF###D##G#H#IJ###"
-B = deSerializeTree(b)
-print("arbre B")
-print("")
-pretty_print_tree(B)
-
-
-i = "ABDHW##Q##IO##V##EJC##L##KG##S##CFLM##R##MZ##F##GNT##V##OY##P##"
-I = deSerializeTree(i)
-print("arbre I ")
-print("")
-pretty_print_tree(I)

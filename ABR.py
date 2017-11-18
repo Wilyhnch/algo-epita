@@ -4,13 +4,17 @@ import stack
 import fun
 import bintd
 
+##########################################################
+##########################################################
+##########################################################
+# Builds
 
 def add_leaf(B,x):
     if B == None:
         B = bintree.BinTree(x,None,None)
         return B
     else:
-        if B.key > x:
+        if x <= B.key:
             if B.left == None:
                 B.left = bintree.BinTree(x,None,None)
             else:
@@ -43,7 +47,7 @@ def Build_balanced_abr(l):
     B.right = __build_abr(n//2,n,l)
     return B
 
-def Build_abr (l):
+def Build_abr_asleaf (l):
     '''
     Build an non balanced abr
     '''
@@ -53,14 +57,36 @@ def Build_abr (l):
         add_leaf(B,l[i])
     return B
 
+##############################################################
+##############################################################
+##############################################################
 
+def search(B,x):
+    if B == None:
+        return False
+    else:
+        if B.key == x:
+            return True
+        else:
+            if x < B.key :
+                return searh(B.left,x)
+            else:
+                return search(B.right,x)
+
+
+
+
+##############################################################
+##############################################################
+##############################################################
 
 L = [12,3,4,5,72,6,8,54,34,51,64,43,2,23,32,78,47,21,22,37,9,90]
 print("L ", L)
-C = Build_abr(L)
+C = Build_abr_asleaf(L)
 print("tree C")
+bintd.pretty_print_tree(C)
 bintd.print_tree_int(C)
 B = Build_balanced_abr(L)
 print("list tree ",L)
 print("tree B")
-bintd.print_tree_int(B)
+bintd.pretty_print_tree(B)
