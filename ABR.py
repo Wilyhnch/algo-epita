@@ -9,23 +9,6 @@ import bintd
 ##########################################################
 # Builds
 
-def add_leaf(B,x):
-    if B == None:
-        B = bintree.BinTree(x,None,None)
-        return B
-    else:
-        if x <= B.key:
-            if B.left == None:
-                B.left = bintree.BinTree(x,None,None)
-            else:
-                add_leaf(B.left,x)
-        else:
-            if B.right == None:
-                B.right = bintree.BinTree(x,None,None)
-            else:
-                add_leaf(B.right,x)
-        return B
-
 def __build_abr(inf,sup,l):
     if inf +1 == sup :
         return None
@@ -69,10 +52,47 @@ def search(B,x):
             return True
         else:
             if x < B.key :
-                return searh(B.left,x)
+                return search(B.left,x)
             else:
                 return search(B.right,x)
 
+def add_leaf(B,x):
+    if B == None:
+        B = bintree.BinTree(x,None,None)
+        return B
+    else:
+        if x <= B.key:
+            if B.left == None:
+                B.left = bintree.BinTree(x,None,None)
+            else:
+                add_leaf(B.left,x)
+        else:
+            if B.right == None:
+                B.right = bintree.BinTree(x,None,None)
+            else:
+                add_leaf(B.right,x)
+        return B
+
+def __add_root (B,x,L,R):
+    if B == None:
+        L = None
+        R = None
+    else:
+        if B.key <= x :
+            L = B
+            __add_root(B.right,x,L.right,R)
+        else:
+            R = B
+            __add_root(B.left,x,L,R.right)
+
+
+def add_root (B,x):
+    L = bintree.BinTree(None,None,None)
+    R = bintree.BinTree(None,None,None)
+    L,R = __add_root(B,x,L,R)
+    G = bintree.BinTree(x,L,R)
+
+
 
 
 
@@ -80,13 +100,14 @@ def search(B,x):
 ##############################################################
 ##############################################################
 
-L = [12,3,4,5,72,6,8,54,34,51,64,43,2,23,32,78,47,21,22,37,9,90]
+L = [12,3,4,5,72,6,8,54,34,51,66,10,3,4,21,23,456,453,23,12,345,66,54,22,2]
 print("L ", L)
-C = Build_abr_asleaf(L)
-print("tree C")
-bintd.pretty_print_tree(C)
-bintd.print_tree_int(C)
 B = Build_balanced_abr(L)
 print("list tree ",L)
 print("tree B")
-bintd.pretty_print_tree(B)
+bintree.pretty_print_tree(B)
+print(search(B,54))
+print(search(B,6))
+print(search(B,27))
+add_root(B,21)
+bintree.pretty_print_tree(B)
