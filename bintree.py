@@ -34,6 +34,9 @@ def chr_length (c):
             res += 1
             c = c // 10
     else:
+        if c == None:
+            return 1
+        else:
          for i in c:
             res += 1
     return res
@@ -108,19 +111,19 @@ def pretty_print_tree (B):
     level = 0
     q = queue.Queue()
     q.enqueue(B)
-    q.enqueue(None)
+    q.enqueue('@')
     l_key = []
     l_child = []
     while level <= height:
         c = q.dequeue()
-        if c == None:
+        if c == '@':
             __print_keylevel(l_key,level,height)
             __print_branches(l_child,level,height)
             l_child = []
             l_key = []
             level += 1
             if not q.isempty():
-                q.enqueue(None)
+                q.enqueue('@')
         else:
             if c == '#':
                 l_key.append('#')

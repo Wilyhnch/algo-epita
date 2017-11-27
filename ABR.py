@@ -103,7 +103,7 @@ def delete_key (B,x):
     else:
         parent = To_del
         if parent.left == None and parent.right == None:
-            To_del = None
+            To_del.key = None
         else:
             C = To_del.left
             while C.right != None:
@@ -114,7 +114,65 @@ def delete_key (B,x):
                     parent.right = C.left
                 else:
                     parent.left = C.left
+    return B
+
+def __delete_max (B,parent,x):
+    if B.left == None and B.right == None:
+        parent.left = None
+    else:
+        while B.right != None:
+            parent = B
+            B = B.right
+        res = B.key
+        if B.left != None:
+            if parent.left == B:
+                parent.left = B.left
+            else:
+                parent.right = B.left
+        else:
+            parent.right = None
+    return res
+
+def __delete (B,parent,x):
+    if B == None:
         return B
+    else:
+        if x < B.key:
+            return __delete(B.left,B,x)
+        else:
+            if x > B.key:
+                return __delete(B.right,B,x)
+            else:
+                if B.left != None:
+                    key = __delete_max(B.left,B,x)
+                    B.key = key
+                else:
+                    if parent.left == B :
+                        parent.left = B.right
+                    else:
+                        parent.right = B.right
+
+    return B
+
+
+def delete (B,x):
+    if B == None:
+        return B
+    else:
+        if x < B.key:
+            return __delete(B.left,B,x)
+        else:
+            if x > B.key:
+                return __delete(B.right,B,x)
+            else:
+                key = __delete_max(B.left,B,x)
+                B.key = key
+    return B
+                
+
+                
+
+
 
 
 
@@ -132,12 +190,15 @@ B = Build_balanced_abr(L)
 print("list tree ",L)
 print("tree B")
 bintree.pretty_print_tree(B)
-delete_key(B,54)
+delete(B,54)
 print("delete 54 ")
 bintree.pretty_print_tree(B)
 print("delete 11")
-delete_key(B,11)
+delete(B,11)
 bintree.pretty_print_tree(B)
 print("delete 22")
-delete_key(B,22)
+delete(B,22)
+bintree.pretty_print_tree(B)
+print("delete 21")
+delete(B,21)
 bintree.pretty_print_tree(B)
