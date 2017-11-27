@@ -10,13 +10,13 @@ import bintd
 # Builds
 
 def __build_abr(inf,sup,l):
-    if inf +1 == sup :
+    if inf  == sup:
         return None
-    n = (((sup - inf)//2) + inf)
-    B = bintree.BinTree(l[n],None,None)
-    if (n != inf) and not((inf + 1 == n) and (sup - 1 == n)):
+    else:
+        n = (((sup - inf)//2) + inf)
+        B = bintree.BinTree(l[n],None,None)
         B.left = __build_abr(inf,n,l)
-        B.right = __build_abr(n,sup,l)
+        B.right = __build_abr(n+1,sup,l)
     return B
 
 def Build_balanced_abr(l):
@@ -25,9 +25,7 @@ def Build_balanced_abr(l):
     '''
     fun.sort_bubble(l)
     n = len(l)
-    B = bintree.BinTree(l[n//2],None,None)
-    B.left = __build_abr(0,n//2,l)
-    B.right = __build_abr(n//2,n,l)
+    B = __build_abr(0,len(l) - 1,l)
     return B
 
 def Build_abr_asleaf (l):
@@ -35,7 +33,7 @@ def Build_abr_asleaf (l):
     Build an non balanced abr
     '''
     n = len(l)
-    B = add_leaf(None,l[0])
+    B = add_leaf(None,1,l[0])
     for i in range (1,n):
         add_leaf(B,l[i])
     return B
@@ -46,10 +44,10 @@ def Build_abr_asleaf (l):
 
 def search(B,x):
     if B == None:
-        return False
+        return None
     else:
         if B.key == x:
-            return True
+            return B
         else:
             if x < B.key :
                 return search(B.left,x)
@@ -73,24 +71,52 @@ def add_leaf(B,x):
                 add_leaf(B.right,x)
         return B
 
-def __add_root (B,x,L,R):
+def __test_bin(B,inf,sup):
     if B == None:
-        L = None
-        R = None
+        return True
     else:
-        if B.key <= x :
-            L = B
-            __add_root(B.right,x,L.right,R)
+        return B.key <= sup and B.key > inf and __test_bin(B.left,inf,B.key)\
+            and __test_bin(B.right,B.key,sup)
+
+def test_bin (B):
+    if B == None:
+        return False
+    else:
+        inf = -float("inf")
+        sup = float("inf")
+        return __test_bin(B,inf , sup)
+
+def __delete_key (B,To_del):
+    new_node = To_del
+    while new_node.right != None:
+        new_node = new_node.right
+    To_del.key = new_node.key
+    new_node = new_node.left
+    return B
+
+
+
+def delete_key (B,x):
+    To_del = search (B,x)
+    if To_del == None:
+        return B
+    else:
+        parent = To_del
+        if parent.left == None and parent.right == None:
+            To_del = None
         else:
-            R = B
-            __add_root(B.left,x,L,R.right)
+            C = To_del.left
+            while C.right != None:
+                parent = C
+                C = C.right
+                To_del.key = C.key
+                if parent != To_del:
+                    parent.right = C.left
+                else:
+                    parent.left = C.left
+        return B
 
 
-def add_root (B,x):
-    L = bintree.BinTree(None,None,None)
-    R = bintree.BinTree(None,None,None)
-    L,R = __add_root(B,x,L,R)
-    G = bintree.BinTree(x,L,R)
 
 
 
@@ -100,14 +126,18 @@ def add_root (B,x):
 ##############################################################
 ##############################################################
 
-L = [12,3,4,5,72,6,8,54,34,51,66,10,3,4,21,23,456,453,23,12,345,66,54,22,2]
+L = [17,3,1,5,72,6,7,56,34,51,66,10,26,11,2,4,21,24,456,453,23,12,345,54,22,8]
 print("L ", L)
 B = Build_balanced_abr(L)
 print("list tree ",L)
 print("tree B")
 bintree.pretty_print_tree(B)
-print(search(B,54))
-print(search(B,6))
-print(search(B,27))
-add_root(B,21)
+delete_key(B,54)
+print("delete 54 ")
+bintree.pretty_print_tree(B)
+print("delete 11")
+delete_key(B,11)
+bintree.pretty_print_tree(B)
+print("delete 22")
+delete_key(B,22)
 bintree.pretty_print_tree(B)
