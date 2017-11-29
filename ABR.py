@@ -97,7 +97,9 @@ def __delete_max (B,parent,x):
     else:
         while B.right != None:
             parent = B
+            print ("before" ,B.key)
             B = B.right
+            print("after ", B.key)
         res = B.key
         if B.left != None:
             if parent.left == B:
@@ -143,33 +145,32 @@ def delete (B,x):
                 B.key = key
     return B
 
-def find_max (B):
-    while B.right != None:
-        B = B.left
-    return B
+def delete_max (B):
+    res = None
+    if B.right != None:
+        B.right , res = delete_max(B.right)
+    else:
+        return B.left,B.key
+    return B,res
 
 def delete_rec (B,x):
     if B == None:
         pass
     else:
-        if x < B.key:
-            B.left = delete_rec(B.left,x)
-        else:
-            if x > B.key:
-                B.right = delete_rec(B.right,x)
+        if x == B.key:
+            if B.right == None:
+                return B.left
             else:
-                if B.right == None :
-                    return B.left
+                if B.right == None:
+                    return B.right
                 else:
-                    if B.left == None:
-                        return B.right
-                    else:
-                        if B.left == None and B.right == None:
-                            return None
-                        else:
-                            res = find_max(B.left)
-                            B.key = res.key
-                            return delete_rec(B,res.key)
+                    B.left , res = delete_max(B.left)
+                    B.key = res
+        else:
+            if x < B.key:
+                B.left = delete_rec(B.left,x)
+            else:
+                B.right = delete_rec(B.right,x)
     return B
 
 
@@ -190,13 +191,13 @@ delete_rec(B,54)
 print("delete 54 ")
 bintree.pretty_print_tree(B)
 print("delete 11")
-delete(B,11)
+delete_rec(B,11)
 bintree.pretty_print_tree(B)
 print("delete 22")
-delete(B,22)
+delete_rec(B,22)
 bintree.pretty_print_tree(B)
 print("delete 21")
-delete(B,21)
+delete_rec(B,21)
 bintree.pretty_print_tree(B)
 print("added 25 ")
 add_leaf(B,25)
