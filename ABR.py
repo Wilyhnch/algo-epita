@@ -14,8 +14,8 @@ def __build_abr(inf,sup,l):
         return None
     else:
         n = (((sup - inf)//2) + inf)
-        #while l[n] == l [n+1]:
-        #    n += 1
+        while n+1 < sup and l[n] == l[n+1]:
+            n += 1
         B = bintree.BinTree(l[n],None,None)
         B.left = __build_abr(inf,n,l)
         B.right = __build_abr(n+1,sup,l)
@@ -146,7 +146,6 @@ def delete (B,x):
     return B
 
 def delete_max (B):
-    res = None
     if B.right != None:
         B.right , res = delete_max(B.right)
     else:
@@ -155,13 +154,13 @@ def delete_max (B):
 
 def delete_rec (B,x):
     if B == None:
-        pass
+        return None
     else:
         if x == B.key:
             if B.right == None:
                 return B.left
             else:
-                if B.right == None:
+                if B.left == None:
                     return B.right
                 else:
                     B.left , res = delete_max(B.left)
@@ -173,7 +172,27 @@ def delete_rec (B,x):
                 B.right = delete_rec(B.right,x)
     return B
 
+def __coupe(x,B,G,D):
+    if B == None:
+        G = None
+        B = None
+    else:
+        if B.key <= x :
+            G = B
+            G.left = B.left
+            G.right, D =__coupe(x,B.right,G.right,D)
+        else:
+            D = B
+            D.right = B.right
+            G , D.left = __coupe(x,B.left,G,D.left)
+    return G , D
 
+
+def add_root (B,x):
+    N = bintree.BinTree(x,None,None)
+    N.left , N.right = __coupe(x,B,None,None)
+    B = bintree.BinTree(x,N.left,N.right)
+    return B
 
 
 
@@ -181,24 +200,30 @@ def delete_rec (B,x):
 ##############################################################
 ##############################################################
 
-L = [17,3,1,5,72,6,7,56,34,11,66,10,26,2,4,21,24,456,453,23,12,345,54,22,8]
+L = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,2,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70]
 print("L ", L)
 B = Build_balanced_abr(L)
 print("list tree ",L)
 print("tree B")
-bintree.pretty_print_tree(B)
-delete_rec(B,54)
-print("delete 54 ")
-bintree.pretty_print_tree(B)
-print("delete 11")
-delete_rec(B,11)
-bintree.pretty_print_tree(B)
-print("delete 22")
-delete_rec(B,22)
-bintree.pretty_print_tree(B)
-print("delete 21")
-delete_rec(B,21)
-bintree.pretty_print_tree(B)
-print("added 25 ")
-add_leaf(B,25)
-bintree.pretty_print_tree(B)
+bintree.print_tree(B)
+#delete_rec(B,54)
+#print("delete 54 ")
+#bintree.print_tree(B)
+#print("delete 11")
+#delete_rec(B,11)
+#bintree.print_tree(B)
+#print("delete 22")
+#delete_rec(B,22)
+#bintree.print_tree(B)
+#print("delete 21")
+#delete_rec(B,21)
+#bintree.print_tree(B)
+#print("added 27 ")
+#add_leaf(B,27)
+#bintree.print_tree(B)
+#print("add root 30")
+#B = add_root(B,30)
+#bintree.print_tree(B)
+#print("add root 25")
+#B= add_root(B,25)
+#bintree.print_tree(B)

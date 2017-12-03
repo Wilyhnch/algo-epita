@@ -30,9 +30,12 @@ def depth(T):
 def chr_length (c):
     res = 0
     if isinstance(c,int):
-        while c != 0 :
-            res += 1
-            c = c // 10
+        if c == 0:
+            return 1
+        else:
+            while c != 0 :
+                res += 1
+                c = c // 10
     else:
         if c == None:
             return 1
@@ -145,6 +148,159 @@ def pretty_print_tree (B):
                 else:
                     l_child.append(c.right.key)
                     q.enqueue(c.right)
+
+def __print_branches_small (l,level,height):
+    length = len(l)
+    space_front = 0
+    for i in range (height + 1 - level):
+        space_front += 2 ** i
+    space_front = space_front // 2
+    space_middle_bar = 1
+    space_middle_rep = ((2 **(height + 1 - level))*2) - 2
+    for i in range (space_front):
+        print(" ",end ='')
+    #print ("height " , height)
+    #print("level ", level)
+    upto = (2**(height - level))
+    #print ("upto " , upto)
+    goodlength = 2
+    goodlentghdone = False
+    for i in range (length):
+        if i % 2 == 0:
+            if l[i] != '#':
+                if goodlength == i and i+1 < length and l[i+1] == '#':
+                    goodlength += 4
+                    goodlentghdone = True
+                    for j in range (upto +2):
+                        print("-", end = '')
+                else:
+                    for j in range (upto+1):
+                        print("-",end = '')
+            else:
+                for j in range (upto):
+                    print(" ",end = '')
+        elif i % 2 != 0:
+            if l[i-1] == '#':
+                for j in range (upto + 2):
+                    if l[i] != '#':
+                        print ("-",end = '')
+                    else:
+                        print(" ",end = '')
+            else:
+                for j in range (upto + 1):
+                    if l[i] != '#':
+                        print ("-",end = '')
+                    else:
+                        print(" ",end = '')
+            if i < length - 1:
+                if goodlentghdone:
+                    goodlentghdone = False
+                    for j in range (upto * 2 - 3):
+                        print(" ",end = '')
+                else:
+                    for j in range (upto * 2 - 2):
+                        print (" ",end = '')
+
+
+    print()
+
+
+
+
+
+def __print_keylevel_small(keys,l,level,height):
+    num_key = len(keys)
+    space_front = 0
+    for i in range (height + 1 - level):
+        space_front += 2 ** i
+    j = 0
+    if num_key == 1:
+        j += 1
+    while j < 3:
+        for i in range (space_front):
+            print(" ",end = '')
+        between_tree = False
+        for i in range (num_key):
+            if keys[i] != '#':
+                if j == 0:
+                    print("|",end = '')
+                else:
+                    if j == 2 and (l[i+i] != '#' or l[i+i+1]!= '#'):
+                        print("|",end = '')
+                    else:
+                        if j == 1:
+                            print(keys[i],end = '')
+                        else:
+                            print(" ",end = '')
+            else:
+                print(" ",end='')
+
+            chr_len = chr_length(keys[i])
+            if i < num_key - 1:
+                if not between_tree :
+                    if j == 1:
+                        for k in range ((2 ** (height + 1 - level))*2 + 1 - chr_len):
+                            print (" ",end = '')
+                    else:
+                        for k in range ((2 ** (height + 1 - level))*2):
+                            print (" ",end = '')
+                else:
+                    if j == 1:
+                        for k in range (((2 **(height + 1 - level))*2) - 2 + 1 - chr_len):
+                            print(" ", end = '')
+                    else:
+                        for k in range (((2 **(height + 1 - level))*2) - 2):
+                            print(" ", end = '')
+                between_tree = not between_tree
+        j += 1
+        print()
+
+
+def pretty_print_tree_small (B):
+    height = depth(B)
+    level = 0
+    q = queue.Queue()
+    q.enqueue(B)
+    q.enqueue('@')
+    l_key = []
+    l_child = []
+    while level <= height:
+        c = q.dequeue()
+        if c == '@':
+            __print_keylevel_small(l_key,l_child,level,height)
+            __print_branches_small(l_child,level,height)
+            l_child = []
+            l_key = []
+            level += 1
+            if not q.isempty():
+                q.enqueue('@')
+        else:
+            if c == '#':
+                l_key.append('#')
+                l_child.append('#')
+                l_child.append('#')
+                q.enqueue('#')
+                q.enqueue('#')
+            else:
+                l_key.append(c.key)
+                if c.left == None:
+                    l_child.append('#')
+                    q.enqueue('#')
+                else:
+                    l_child.append(c.left.key)
+                    q.enqueue(c.left)
+                if c.right == None:
+                    l_child.append('#')
+                    q.enqueue('#')
+                else:
+                    l_child.append(c.right.key)
+                    q.enqueue(c.right)
+
+def print_tree (B):
+    if depth(B) < 5:
+        pretty_print_tree(B)
+    else:
+        pretty_print_tree_small(B)
 
 
 ###############################################
