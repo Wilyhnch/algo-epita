@@ -9,10 +9,18 @@ class BinTree:
 
 class Bintree_Parent:
     def __init__(self,key,parent,left,right):
-        self.key = Key
+        self.key = key
         self.parent = parent
         self.left = left
         self.right = right
+
+class Bintree_Size:
+    def __init__(self,key,left,right,size):
+        self.key = key
+        self.size = size
+        self.left = left
+        self.right = right
+
 
 ###############################################
 ###############################################

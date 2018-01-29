@@ -9,6 +9,7 @@ import bintd
 ##########################################################
 # Builds
 
+
 def __build_abr(inf,sup,l):
     if inf  == sup:
         return None
@@ -21,6 +22,7 @@ def __build_abr(inf,sup,l):
         B.right = __build_abr(n+1,sup,l)
     return B
 
+
 def Build_balanced_abr(l):
     '''
     Build a balanced abr
@@ -29,6 +31,7 @@ def Build_balanced_abr(l):
     n = len(l)
     B = __build_abr(0,len(l) - 1,l)
     return B
+
 
 def Build_abr_asleaf (l):
     '''
@@ -40,9 +43,11 @@ def Build_abr_asleaf (l):
         add_leaf(B,l[i])
     return B
 
+
 ##############################################################
 ##############################################################
 ##############################################################
+
 
 def search(B,x):
     if B == None:
@@ -172,27 +177,22 @@ def delete_rec (B,x):
                 B.right = delete_rec(B.right,x)
     return B
 
-def __coupe(x,B,G,D):
+def __coupe(x,B):
     if B == None:
-        G = None
-        B = None
+        return (None,None)
     else:
         if B.key <= x :
             G = B
-            G.left = B.left
-            G.right, D =__coupe(x,B.right,G.right,D)
+            G.right, D =__coupe(x,B.right)
         else:
             D = B
-            D.right = B.right
-            G , D.left = __coupe(x,B.left,G,D.left)
+            G , D.left = __coupe(x,B.left)
     return G , D
 
 
 def add_root (B,x):
-    N = bintree.BinTree(x,None,None)
-    N.left , N.right = __coupe(x,B,None,None)
-    B = bintree.BinTree(x,N.left,N.right)
-    return B
+    (G,D) = __coupe(x,B)
+    return bintree.BinTree(x,G,D)
 
 
 
@@ -200,7 +200,7 @@ def add_root (B,x):
 ##############################################################
 ##############################################################
 
-L = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,2,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70]
+L = [0,1,2,3,4,5,6,7,8,9,10,31,32,33,34,35,36,37,38,39,66,67,68,69,70]
 print("L ", L)
 B = Build_balanced_abr(L)
 print("list tree ",L)
@@ -225,5 +225,5 @@ bintree.print_tree(B)
 #B = add_root(B,30)
 #bintree.print_tree(B)
 #print("add root 25")
-#B= add_root(B,25)
+#B = add_root(B,25)
 #bintree.print_tree(B)
