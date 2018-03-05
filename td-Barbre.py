@@ -70,6 +70,13 @@ def binarysearchPos(L,x):
 
 def __searchBtree(B,x):
     i = binarysearchPos(B.keys,x)
+    if i <B.nbkeys and B.keys[i] == x:
+        return (B,i)
+    elif B.chilren == []:
+        return (None,-1)
+    else:
+        return __searchBtree(B.children[i],x)
+
 
 def searchBtree(B,x):
     if B == None:
